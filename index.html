@@ -1,51 +1,40 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Romantic & Sad Stories</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Romantic or Sad Story</title>
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; background: #fff0f5; }
-        h1 { color: #d63384; text-align: center; }
-        form, .story { max-width: 500px; margin: 20px auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
-        input, textarea { width: 100%; margin: 10px 0; padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
-        button { background: #d63384; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; }
-        .comments, .likes { font-size: 0.9em; color: #666; }
+        body { background: #ffe6f0; font-family: sans-serif; padding: 20px; }
+        .story-box { background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+        .story-box img { max-width: 100%; margin-top: 10px; }
+        .like-btn { color: red; cursor: pointer; }
+        .lang-switch { margin-top: 20px; }
     </style>
+    <script>
+        function postStory() {
+            const text = document.getElementById('storyText').value;
+            const feed = document.getElementById('storyFeed');
+            const newStory = document.createElement('div');
+            newStory.className = 'story-box';
+            newStory.innerHTML = `<p>${text}</p><span class='like-btn' onclick='likeStory(this)'>❤️ Like</span> | <input type='text' placeholder='Add comment'>`;
+            feed.prepend(newStory);
+            document.getElementById('storyText').value = '';
+        }
+        function likeStory(btn) {
+            btn.innerHTML = '❤️ Liked';
+        }
+    </script>
 </head>
 <body>
     <h1>Share Your Romantic or Sad Story</h1>
-    <form id="storyForm">
-        <textarea id="story" rows="6" placeholder="Write your story here... (Your identity stays hidden)"></textarea>
-        <input type="file" id="image" accept="image/*" />
-        <button type="submit">Post Story</button>
-    </form>
-    <div id="storyList"></div>
+    <textarea id="storyText" placeholder="Write your story here..." rows="5" cols="40"></textarea><br>
+    <button onclick="postStory()">Post Story</button>
 
-    <script>
-        const form = document.getElementById('storyForm');
-        const storyList = document.getElementById('storyList');
-
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const storyText = document.getElementById('story').value;
-            if (!storyText.trim()) return;
-            const storyDiv = document.createElement('div');
-            storyDiv.className = 'story';
-            const imgInput = document.getElementById('image');
-            if (imgInput.files[0]) {
-                const img = document.createElement('img');
-                img.src = URL.createObjectURL(imgInput.files[0]);
-                img.style.width = '100%';
-                img.style.borderRadius = '10px';
-                storyDiv.appendChild(img);
-            }
-            storyDiv.innerHTML += `<p>${storyText}</p>
-                <div class="likes">❤️ <span>0</span> likes</div>
-                <div class="comments">💬 0 comments</div>`;
-            storyList.prepend(storyDiv);
-            form.reset();
-        });
-    </script>
+    <div id="storyFeed" style="margin-top: 30px;">
+        <h2>All Stories</h2>
+        <!-- Stories will be shown here -->
+    </div>
 </body>
 </html>
